@@ -1,0 +1,22 @@
+#!/usr/bin/python3
+
+import subprocess
+import sys
+
+if len(sys.argv) != 2:
+    print("Syntax: git kill <file>")
+    sys.exit(1)
+
+print("Killing " + sys.argv[1])
+subprocess.call([
+  "git",
+  "filter-branch",
+  "--force",
+  "--index-filter",
+  "git rm --cached --ignore-unmatch %s" % sys.argv[1],
+  "--prune-empty",
+  "--tag-name-filter",
+  "cat",
+  "--",
+  "--all"
+])
